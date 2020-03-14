@@ -13,8 +13,8 @@ def load_dataset
   [x, y]
 end
 
-x_in, x_out = load_dataset
-batch_size = x_out.shape[0]
+x, y = load_dataset
+batch_size = y.shape[0]
 
 # Load the Generator model.
 gen_A = Generator.new([64, 64, 3], 64)
@@ -26,24 +26,24 @@ gen_B.load_params("trained/trained_generator_B_params.marshal")
 
 batch_size.times do |i|
   # Save the input image.
-  input = x_in[i, false]
+  input = x[i, false]
   img = Numo::UInt8.cast(((input + 1) * 127.5).round)
   DNN::Image.write("img/img_#{i}_input.jpg", img)
 
   # Save the output image.
-  out = gen_A.predict1(x_in[i, false])
+  out = gen_A.predict1(x[i, false])
   img = Numo::UInt8.cast(((out + 1) * 127.5).round)
   DNN::Image.write("img/img_#{i}_output.jpg", img)
 end
 
 batch_size.times do |i|
   # Save the input image.
-  input = x_out[i, false]
+  input = y[i, false]
   img = Numo::UInt8.cast(((input + 1) * 127.5).round)
   DNN::Image.write("img/img2_#{i}_input.jpg", img)
 
   # Save the output image.
-  out = gen_B.predict1(x_out[i, false])
+  out = gen_B.predict1(y[i, false])
   img = Numo::UInt8.cast(((out + 1) * 127.5).round)
   DNN::Image.write("img/img2_#{i}_output.jpg", img)
 end

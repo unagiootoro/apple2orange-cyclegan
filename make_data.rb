@@ -4,7 +4,7 @@ require "dnn"
 require_relative "dcgan"
 
 # Epoch of the model to load.
-epoch = 5
+epoch = 10
 
 dcgan_A = DCGAN.load("trained/dcgan_A_model_epoch#{epoch}.marshal")
 gen_A = dcgan_A.gen1
