@@ -96,7 +96,7 @@ num_batchs = iter1.num_datas / BATCH_SIZE
 real = Numo::SFloat.ones(BATCH_SIZE, 1)
 fake = Numo::SFloat.zeros(BATCH_SIZE, 1)
 
-(initial_epoch..EPOCHS).each do |epoch|
+(INITIAL_EPOCH..EPOCHS).each do |epoch|
   num_batchs.times do |index|
     x_batch, y_batch = iter1.next_batch(BATCH_SIZE)
     x_batch2, y_batch2 = iter2.next_batch(BATCH_SIZE)
