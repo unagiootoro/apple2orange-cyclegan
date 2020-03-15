@@ -145,3 +145,14 @@ class DCGAN < Model
     [cycle_image, out]
   end
 end
+
+class CycleGANModel < Model
+  attr_accessor :dcgan_A
+  attr_accessor :dcgan_B
+
+  def initialize(dcgan_A, dcgan_B)
+    super()
+    @dcgan_A = dcgan_A
+    @dcgan_B = dcgan_B
+  end
+end

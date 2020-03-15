@@ -74,16 +74,17 @@ if INITIAL_EPOCH == 1
                 [MeanAbsoluteError.new, SigmoidCrossEntropy.new], loss_weights: [10, 1])
   dcgan_B.setup(Adam.new(alpha: 0.0001, beta1: 0.5),
                 [MeanAbsoluteError.new, SigmoidCrossEntropy.new], loss_weights: [10, 1])
+  cycle_gan_model = CycleGANModel.new(dcgan_A, dcgan_B)
+  # TODO: This setup is dummy. I will fix later.
+  cycle_gan_model.setup(SGD.new, MeanAbsoluteError.new)
 else
-  dcgan_A = DCGAN.load("trained/dcgan_A_model_epoch#{INITIAL_EPOCH - 1}.marshal")
-  dcgan_B = DCGAN.load("trained/dcgan_B_model_epoch#{INITIAL_EPOCH - 1}.marshal")
+  cycle_gan_model = CycleGANModel.load("trained/cycle_gan_model_epoch#{INITIAL_EPOCH - 1}.marshal")
+  dcgan_A = cycle_gan_model.dcgan_A
+  dcgan_B = cycle_gan_model.dcgan_B
   gen_A = dcgan_A.gen1
   gen_B = dcgan_A.gen2
   dis_A = dcgan_A.dis
   dis_B = dcgan_B.dis
-  opt_B = dcgan_B.optimizer
-  dcgan_B = DCGAN.new(gen_B, gen_A, dis_B)
-  dcgan_B.setup(opt_B, [MeanAbsoluteError.new, SigmoidCrossEntropy.new], loss_weights: [10, 1])
 end
 
 x, y = load_dataset
@@ -122,8 +123,7 @@ fake = Numo::SFloat.zeros(BATCH_SIZE, 1)
     puts "B epoch: #{epoch}, index: #{index}, dis_loss: #{dis_loss}, dcgan_loss: #{dcgan_loss}"
   end
   if epoch % 5 == 0
-    dcgan_A.save("trained/dcgan_A_model_epoch#{epoch}.marshal")
-    dcgan_B.save("trained/dcgan_B_model_epoch#{epoch}.marshal")
+    cycle_gan_model.save("trained/cycle_gan_model_epoch#{epoch}.marshal")
   end
   iter1.reset
   iter2.reset
