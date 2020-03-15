@@ -11,7 +11,7 @@ Perform image conversion of apple2orange dataset with Cycle-GAN and ruby-dnn.
 
 ### Clone repository
 ```
-$ git clone https://github.com/unagiootoro/facade-pix2pix
+$ git clone https://github.com/unagiootoro/apple2orange-cyclegan
 ```
 
 ### Start image conversion
